@@ -37,6 +37,7 @@ CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/core/utility
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/core/version.hpp
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/core/vsx_utils.hpp
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/features2d.hpp
+CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/features2d/features2d.hpp
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/flann.hpp
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/flann/all_indices.h
 CMakeFiles/test_func.dir/testFunc.cpp.o: /usr/local/include/opencv2/flann/allocator.h

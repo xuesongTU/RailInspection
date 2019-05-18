@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/xuesong/RailSurfaceInspection/testFunc.cpp" "/home/xuesong/RailSurfaceInspection/CMakeFiles/test_func.dir/testFunc.cpp.o"
+  "/home/xuesong/RailInspection/testFunc.cpp" "/home/xuesong/RailInspection/CMakeFiles/test_func.dir/testFunc.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/xuesong/RailSurfaceInspection/surfaceDefects.cpp" "/home/xuesong/RailSurfaceInspection/CMakeFiles/surface_defects.dir/surfaceDefects.cpp.o"
+  "/home/xuesong/RailInspection/surfaceDefects.cpp" "/home/xuesong/RailInspection/CMakeFiles/surface_defects.dir/surfaceDefects.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -54,47 +54,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xuesong/RailSurfaceInspection
+CMAKE_SOURCE_DIR = /home/xuesong/RailInspection
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xuesong/RailSurfaceInspection
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_func.dir
-
-# All Build rule for target.
-CMakeFiles/test_func.dir/all:
-	$(MAKE) -f CMakeFiles/test_func.dir/build.make CMakeFiles/test_func.dir/depend
-	$(MAKE) -f CMakeFiles/test_func.dir/build.make CMakeFiles/test_func.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xuesong/RailSurfaceInspection/CMakeFiles --progress-num=3,4 "Built target test_func"
-.PHONY : CMakeFiles/test_func.dir/all
-
-# Include target in all.
-all: CMakeFiles/test_func.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_func.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailSurfaceInspection/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_func.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailSurfaceInspection/CMakeFiles 0
-.PHONY : CMakeFiles/test_func.dir/rule
-
-# Convenience name for target.
-test_func: CMakeFiles/test_func.dir/rule
-
-.PHONY : test_func
-
-# clean rule for target.
-CMakeFiles/test_func.dir/clean:
-	$(MAKE) -f CMakeFiles/test_func.dir/build.make CMakeFiles/test_func.dir/clean
-.PHONY : CMakeFiles/test_func.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/test_func.dir/clean
-
-.PHONY : clean
+CMAKE_BINARY_DIR = /home/xuesong/RailInspection
 
 #=============================================================================
 # Target rules for target CMakeFiles/surface_defects.dir
@@ -103,7 +66,7 @@ clean: CMakeFiles/test_func.dir/clean
 CMakeFiles/surface_defects.dir/all:
 	$(MAKE) -f CMakeFiles/surface_defects.dir/build.make CMakeFiles/surface_defects.dir/depend
 	$(MAKE) -f CMakeFiles/surface_defects.dir/build.make CMakeFiles/surface_defects.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xuesong/RailSurfaceInspection/CMakeFiles --progress-num=1,2 "Built target surface_defects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xuesong/RailInspection/CMakeFiles --progress-num=3,4 "Built target surface_defects"
 .PHONY : CMakeFiles/surface_defects.dir/all
 
 # Include target in all.
@@ -113,9 +76,9 @@ all: CMakeFiles/surface_defects.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/surface_defects.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailSurfaceInspection/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/surface_defects.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailSurfaceInspection/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 0
 .PHONY : CMakeFiles/surface_defects.dir/rule
 
 # Convenience name for target.
@@ -130,6 +93,80 @@ CMakeFiles/surface_defects.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/surface_defects.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/yulin.dir
+
+# All Build rule for target.
+CMakeFiles/yulin.dir/all:
+	$(MAKE) -f CMakeFiles/yulin.dir/build.make CMakeFiles/yulin.dir/depend
+	$(MAKE) -f CMakeFiles/yulin.dir/build.make CMakeFiles/yulin.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xuesong/RailInspection/CMakeFiles --progress-num=5,6 "Built target yulin"
+.PHONY : CMakeFiles/yulin.dir/all
+
+# Include target in all.
+all: CMakeFiles/yulin.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/yulin.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/yulin.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 0
+.PHONY : CMakeFiles/yulin.dir/rule
+
+# Convenience name for target.
+yulin: CMakeFiles/yulin.dir/rule
+
+.PHONY : yulin
+
+# clean rule for target.
+CMakeFiles/yulin.dir/clean:
+	$(MAKE) -f CMakeFiles/yulin.dir/build.make CMakeFiles/yulin.dir/clean
+.PHONY : CMakeFiles/yulin.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/yulin.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/defects.dir
+
+# All Build rule for target.
+CMakeFiles/defects.dir/all:
+	$(MAKE) -f CMakeFiles/defects.dir/build.make CMakeFiles/defects.dir/depend
+	$(MAKE) -f CMakeFiles/defects.dir/build.make CMakeFiles/defects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xuesong/RailInspection/CMakeFiles --progress-num=1,2 "Built target defects"
+.PHONY : CMakeFiles/defects.dir/all
+
+# Include target in all.
+all: CMakeFiles/defects.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/defects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/defects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xuesong/RailInspection/CMakeFiles 0
+.PHONY : CMakeFiles/defects.dir/rule
+
+# Convenience name for target.
+defects: CMakeFiles/defects.dir/rule
+
+.PHONY : defects
+
+# clean rule for target.
+CMakeFiles/defects.dir/clean:
+	$(MAKE) -f CMakeFiles/defects.dir/build.make CMakeFiles/defects.dir/clean
+.PHONY : CMakeFiles/defects.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/defects.dir/clean
 
 .PHONY : clean
 

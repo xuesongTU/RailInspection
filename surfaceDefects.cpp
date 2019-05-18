@@ -5,7 +5,9 @@
 #include "opencv2/videoio.hpp"
 #include <iostream>
 #include <vector>  
+#include <algorithm>
 
+	
 
 using namespace std;
 using namespace cv;
@@ -103,6 +105,38 @@ void log_normalization(Mat& Img)
 	normalize(logImg, Img, 1.0, 0.0, NORM_MINMAX);
 }
 
+
+//轮廓按照面积大小降序排序
+bool ascendSort(vector<Point> a, vector<Point> b) 
+{ 
+	return a.size() < b.size(); 
+} 
+
+//轮廓按照面积大小降序排序
+bool descendSort(vector<Point> a, vector<Point> b) 
+{	
+	return a.size() > b.size();
+}
+
+
+void getDefectSize(Mat& Img, double& width, double& height)
+{
+	vector< vector< Point> > contours;  //用于保存所有轮廓信息	
+	findContours(Img, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);	
+
+	//轮廓按照面积从小到大进行排序
+	cv::drawContours(Img, contours, -1, Scalar(255, 0, 0), CV_FILLED);
+	
+	if (contours.size() != 0)
+		{
+			sort(contours.begin(), contours.end(), descendSort);//升序排序	
+			vector<vector<Point> >::iterator itc = contours.begin();
+			Rect rect = boundingRect(*itc);
+			width = rect.width;
+			height = rect.height;
+		}	
+}
+
 int main(int argc, char* argv[])
 { 
 	std::vector< std::string > xlm_list;
@@ -113,11 +147,11 @@ int main(int argc, char* argv[])
 	double t0 = (double)getTickCount();
 	int k = 1;
 	Mat img;
-	//string path = "‪/home/xuesong/RailSurfaceInspection/3142.jpg";
+	
 	for (k= 0; k < 1; k++)
 	{
-		img = imread("/home/xuesong/RailSurfaceInspection/defectsImages/diaokuai/d5.png");
-		cout << "hello" << img.empty() << endl;
+		img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+		cout << "hello" << img.channels() << endl;
 		
 		if (img.empty())
 			return -1;
@@ -131,7 +165,10 @@ int main(int argc, char* argv[])
 		}
 
 		// image normalization
+		resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
 		log_normalization(img);
+		//imshow("gray", img);
+		//waitKey();
 
 		int m_rows = img.rows;
 		int m_cols = img.cols;
@@ -176,10 +213,33 @@ int main(int argc, char* argv[])
 
 		tempMat = (saliencyMat > thr_segment) / 255;
 		labelMat = labelMat.mul(tempMat);
-		imshow("123", labelMat*100);
-		waitKey();
+		
+		cv::Mat opened;
+		Mat image = labelMat*255;
+		//cv::imshow("origin", image);
+
+		//do open process for the image
+		cv::Mat element5(4, 4, CV_8U, cv::Scalar(1));
+		cv::morphologyEx(image, opened, cv::MORPH_OPEN, element5);
+
+		//cv::imshow("opened", opened);
+
+		double width = 0.;
+		double height = 0.;
+		getDefectSize(opened, width, height);
+		cout << "the area of defect: " << width * height << endl;
+
+	
+		//cv::morphologyEx(image, closed, cv::MORPH_CLOSE, element5);
+
+		//cv::imshow("closed",closed);
+		//waitKey();
+
 		// save result
-		imwrite("results2.jpg", labelMat*255);
+		//imwrite("results2.jpg", labelMat*255);
+		//imwrite("results/origin2.jpg", image);
+		//imwrite("results/opened2.jpg", opened);
+		//imwrite("results/closed2.jpg", closed);
 	}
 
 	t0 = (double)getTickCount() - t0;

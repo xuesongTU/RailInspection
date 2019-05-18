@@ -48,6 +48,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/test_func.dir/DependInfo.cmake"
   "CMakeFiles/surface_defects.dir/DependInfo.cmake"
+  "CMakeFiles/yulin.dir/DependInfo.cmake"
+  "CMakeFiles/defects.dir/DependInfo.cmake"
   )

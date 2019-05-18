@@ -1,4 +1,5 @@
-/home/xuesong/RailSurfaceInspection/CMakeFiles/edit_cache.dir
-/home/xuesong/RailSurfaceInspection/CMakeFiles/test_func.dir
-/home/xuesong/RailSurfaceInspection/CMakeFiles/rebuild_cache.dir
-/home/xuesong/RailSurfaceInspection/CMakeFiles/surface_defects.dir
+/home/xuesong/RailInspection/CMakeFiles/edit_cache.dir
+/home/xuesong/RailInspection/CMakeFiles/rebuild_cache.dir
+/home/xuesong/RailInspection/CMakeFiles/surface_defects.dir
+/home/xuesong/RailInspection/CMakeFiles/yulin.dir
+/home/xuesong/RailInspection/CMakeFiles/defects.dir

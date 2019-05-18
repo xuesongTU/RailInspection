@@ -23,12 +23,18 @@ if(CMAKE_VERSION VERSION_LESS "2.8.11")
   include_directories(${OpenCV_INCLUDE_DIRS})
 endif()
 
+set (CMAKE_CXX_STANDARD 11)
+
 # Declare the executable target built from your sources
 add_executable(surface_defects surfaceDefects.cpp )
 
 # Link your application with OpenCV libraries
 target_link_libraries(surface_defects ${OpenCV_LIBS})
 
-add_executable(test_func testFunc.cpp)
+add_executable(yulin yulinshang.cpp)
 
-target_link_libraries(test_func ${OpenCV_LIBS})
+target_link_libraries(yulin ${OpenCV_LIBS})
+
+add_executable(defects defectsDetect.cpp)
+
+target_link_libraries(defects ${OpenCV_LIBS})
