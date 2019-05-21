@@ -44,9 +44,34 @@ uchar adaptiveProcess(const Mat &im, int row,int col,int kernelSize,int maxSize)
     }
 }
 
+void adaptiveMedianFilter(Mat &img, int nRow, int nCol, int winSize)
+{
+	//扩展图像的边界
+	//copyMakeBorder(img, img, winSize / 2, winSize / 2, winSize / 2, winSize / 2, BorderTypes::BORDER_REFLECT);
+	
+	for(int i = winSize / 2; i < nRow - winSize / 2; i++)
+	{
+		for(int j = winSize / 2; j < nCol - winSize / 2; j++)
+		{
+			vector<uchar> pixels;
+			for (int a = -winSize / 2; a <= winSize / 2; a++)
+			{
+				for (int b = -winSize / 2; b <= winSize / 2; b++)
+				{
+				    pixels.push_back(img.at<uchar>(i + a, j + b));
+				}
+			}
+			sort(pixels.begin(), pixels.end());
+			if(img.at<uchar>(i, j) == pixels.back());
+				img.at<uchar>(i,j) = pixels[winSize*winSize / 2];
+		}	
+	}
+}
+
 int main(int argc, char* argv[]){
-	Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y6.png");
-	cout << "hello" << img.channels() << endl;
+	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/g1.png");
+	Mat img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+	resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
 	
 	double t0 = (double)getTickCount();
 	if (img.empty())
@@ -55,11 +80,29 @@ int main(int argc, char* argv[]){
 	{
 		cvtColor(img, img, CV_BGR2GRAY);
 	}
+
+	/*
 	if (img.depth() == CV_8U)
 	{
 		img.convertTo(img, CV_32F);
 	}
+	*/
 
+	imshow("raw", img);	
+
+
+	Mat aImage;	
+	adaptiveMedianFilter(img, img.cols, img.rows, 5);
+	imshow("adp", img);
+
+
+	Mat bImage;	
+	medianBlur(img, bImage, 5);
+	imshow("medianblur", bImage);
+	
+
+
+/*
 	int minSize = 5; // 滤波器窗口的起始尺寸
     int maxSize = 7; // 滤波器窗口的最大尺寸
     Mat im1;
@@ -75,12 +118,19 @@ int main(int argc, char* argv[]){
     }
 	
 	imshow("median_filter", im1);
-	
+*/	
 	//double t0 = (double)getTickCount();
 	//top-hat operation
 	//cv::Mat element(4, 4, CV_8U, cv::Scalar(1));
+
+	Mat tImage;
 	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(15, 15));
-	cv::morphologyEx(img, img, cv::MORPH_TOPHAT, element);
+	cv::morphologyEx(img, tImage, cv::MORPH_TOPHAT, element);
+
+	Mat cImage;
+	threshold(tImage, cImage, 35.0, 255.0, CV_THRESH_BINARY_INV);
+	imshow("Binary", cImage);
+
 	t0 = (double)getTickCount() - t0;
 	cout << " time:\n " << t0 * 1000 / getTickFrequency() << " ms" << endl;
 	imshow("tophat", img);

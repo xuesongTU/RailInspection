@@ -132,8 +132,10 @@ void connected_component_stats_demo(Mat &image) {
 int main(){
 	double t0 = (double)getTickCount();
 
-	Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y1.png",0);
-	
+	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y2.png",0);
+	Mat img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/g1.png",0);
+	resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
+
 	namedWindow("raw");
 
 	namedWindow("binary");
@@ -166,12 +168,17 @@ int main(){
 	Mat drawing = Mat::zeros(bImage.size(), CV_8UC3);
 
 	int num = 0;
+	
+    for(auto it = contours.begin(); it != contours.end(); it++){ 
+		// iterate through each contour.
+		cout << "size: " << (*it).size() << endl;
+		if((*it).size() < 4)
+			break;
 
-    for(auto it = contours.begin(); it != contours.end(); it++){ // iterate through each contour.
-        double area = contourArea(*it);  
+        double area = contourArea(*it); 
+		cout << area << endl; 
 		//  Find the area of contour
 		if(area > 10){
-			cout << area << endl;
 			num ++;
 		}
 		else{
@@ -180,7 +187,6 @@ int main(){
 		
     }
 	
-
 	vector<RotatedRect> minRect(contours.size());
 	vector<RotatedRect> minEllipse(contours.size());
 
@@ -189,14 +195,16 @@ int main(){
 		minRect[i] = minAreaRect(Mat(contours[i]));
 		if (contours[i].size() > 5){
 			minEllipse[i] = fitEllipse(Mat(contours[i]));
-			if(minEllipse[i].angle > 110 && minEllipse[i].angle < 150)
+			if(minEllipse[i].angle > 110 && minEllipse[i].angle < 150 && minEllipse[i].size.height > 10)
 				count += 1;
 		}
 	} 	
 	
 	cout << "the number of yulin: " << count << endl;
-	/// 绘出轮廓及其可倾斜的边界框和边界椭圆	
 
+	if(count > 15)
+		cout << "yulinshang detected!" << endl;
+	/// 绘出轮廓及其可倾斜的边界框和边界椭圆	
 	for (int i = 0; i < contours.size(); i++){
 		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 		// contour		
