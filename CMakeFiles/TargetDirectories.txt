@@ -3,3 +3,4 @@
 /home/xuesong/RailInspection/CMakeFiles/surface_defects.dir
 /home/xuesong/RailInspection/CMakeFiles/yulin.dir
 /home/xuesong/RailInspection/CMakeFiles/defects.dir
+/home/xuesong/RailInspection/CMakeFiles/test.dir

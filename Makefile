@@ -149,6 +149,19 @@ defects/fast:
 	$(MAKE) -f CMakeFiles/defects.dir/build.make CMakeFiles/defects.dir/build
 .PHONY : defects/fast
 
+#=============================================================================
+# Target rules for targets named test
+
+# Build rule for target.
+test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test
+.PHONY : test
+
+# fast build rule for target.
+test/fast:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
+.PHONY : test/fast
+
 defectsDetect.o: defectsDetect.cpp.o
 
 .PHONY : defectsDetect.o
@@ -203,6 +216,33 @@ surfaceDefects.cpp.s:
 	$(MAKE) -f CMakeFiles/surface_defects.dir/build.make CMakeFiles/surface_defects.dir/surfaceDefects.cpp.s
 .PHONY : surfaceDefects.cpp.s
 
+testFunc.o: testFunc.cpp.o
+
+.PHONY : testFunc.o
+
+# target to build an object file
+testFunc.cpp.o:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/testFunc.cpp.o
+.PHONY : testFunc.cpp.o
+
+testFunc.i: testFunc.cpp.i
+
+.PHONY : testFunc.i
+
+# target to preprocess a source file
+testFunc.cpp.i:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/testFunc.cpp.i
+.PHONY : testFunc.cpp.i
+
+testFunc.s: testFunc.cpp.s
+
+.PHONY : testFunc.s
+
+# target to generate assembly for a file
+testFunc.cpp.s:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/testFunc.cpp.s
+.PHONY : testFunc.cpp.s
+
 yulinshang.o: yulinshang.cpp.o
 
 .PHONY : yulinshang.o
@@ -241,12 +281,16 @@ help:
 	@echo "... surface_defects"
 	@echo "... yulin"
 	@echo "... defects"
+	@echo "... test"
 	@echo "... defectsDetect.o"
 	@echo "... defectsDetect.i"
 	@echo "... defectsDetect.s"
 	@echo "... surfaceDefects.o"
 	@echo "... surfaceDefects.i"
 	@echo "... surfaceDefects.s"
+	@echo "... testFunc.o"
+	@echo "... testFunc.i"
+	@echo "... testFunc.s"
 	@echo "... yulinshang.o"
 	@echo "... yulinshang.i"
 	@echo "... yulinshang.s"

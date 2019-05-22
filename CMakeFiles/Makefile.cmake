@@ -51,4 +51,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/surface_defects.dir/DependInfo.cmake"
   "CMakeFiles/yulin.dir/DependInfo.cmake"
   "CMakeFiles/defects.dir/DependInfo.cmake"
+  "CMakeFiles/test.dir/DependInfo.cmake"
   )

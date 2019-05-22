@@ -150,7 +150,10 @@ int main(int argc, char* argv[])
 	
 	for (k= 0; k < 1; k++)
 	{
-		img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+		//img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+		//img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y3.png");
+		img = imread("/home/xuesong/RailInspection/defectsImages/test/14.jpg");
+		img = img(Rect(250, 0, 180, 480));
 		cout << "hello" << img.channels() << endl;
 		
 		if (img.empty())
@@ -165,7 +168,7 @@ int main(int argc, char* argv[])
 		}
 
 		// image normalization
-		resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
+		//resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
 		log_normalization(img);
 		//imshow("gray", img);
 		//waitKey();
@@ -222,13 +225,12 @@ int main(int argc, char* argv[])
 		cv::Mat element5(4, 4, CV_8U, cv::Scalar(1));
 		cv::morphologyEx(image, opened, cv::MORPH_OPEN, element5);
 
-		//cv::imshow("opened", opened);
-
 		double width = 0.;
 		double height = 0.;
 		getDefectSize(opened, width, height);
 		cout << "the area of defect: " << width * height << endl;
-
+		cv::imshow("result",opened);
+		waitKey();
 	
 		//cv::morphologyEx(image, closed, cv::MORPH_CLOSE, element5);
 

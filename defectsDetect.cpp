@@ -44,6 +44,38 @@ uchar adaptiveProcess(const Mat &im, int row,int col,int kernelSize,int maxSize)
     }
 }
 
+
+void log_normalization(Mat& Img)
+{
+	Img = (Img + 1)*0.5;
+	Mat logImg;
+	cout << logImg << endl;
+	log(Img, logImg);
+
+	Mat tmp_m, tmp_std;
+	double meanV, stdV;
+	meanStdDev(logImg, tmp_m, tmp_std);
+	meanV = tmp_m.at<double>(0, 0);
+	stdV = tmp_std.at<double>(0, 0);
+
+	logImg = (logImg - meanV) / stdV;
+	normalize(logImg, Img, 1.0, 0.0, NORM_MINMAX);
+}
+
+
+void diaokuai(Mat &img, Mat &src, double thresh)
+{
+	threshold(img, src, thresh, 255.0, CV_THRESH_BINARY_INV);
+}
+
+void yulin(Mat &img, Mat &cImage)
+{
+	Mat tImage;
+	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(15, 15));
+	cv::morphologyEx(img, tImage, cv::MORPH_TOPHAT, element);
+	threshold(tImage, cImage, 35.0, 255.0, CV_THRESH_BINARY_INV);
+}
+
 void adaptiveMedianFilter(Mat &img, int nRow, int nCol, int winSize)
 {
 	//扩展图像的边界
@@ -70,10 +102,15 @@ void adaptiveMedianFilter(Mat &img, int nRow, int nCol, int winSize)
 
 int main(int argc, char* argv[]){
 	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/g1.png");
-	Mat img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
-	resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
+	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+	//resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
+
+	Mat img = imread("/home/xuesong/RailInspection/defectsImages/test/14.jpg");
+	img = img(Rect(250, 0, 180, 480));
+
 	
 	double t0 = (double)getTickCount();
+
 	if (img.empty())
 		return -1;
 	if (img.channels() != 1)
@@ -81,14 +118,21 @@ int main(int argc, char* argv[]){
 		cvtColor(img, img, CV_BGR2GRAY);
 	}
 
-	/*
+	imshow("raw", img);
 	if (img.depth() == CV_8U)
 	{
 		img.convertTo(img, CV_32F);
 	}
-	*/
+	
 
-	imshow("raw", img);	
+	
+	
+	log_normalization(img);
+	imshow("normalization", img);
+	
+	Mat dImg;
+	diaokuai(img, dImg, 50.0);
+	imshow("diaokuai", dImg);
 
 
 	Mat aImage;	
@@ -122,13 +166,9 @@ int main(int argc, char* argv[]){
 	//double t0 = (double)getTickCount();
 	//top-hat operation
 	//cv::Mat element(4, 4, CV_8U, cv::Scalar(1));
-
-	Mat tImage;
-	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(15, 15));
-	cv::morphologyEx(img, tImage, cv::MORPH_TOPHAT, element);
-
+	
 	Mat cImage;
-	threshold(tImage, cImage, 35.0, 255.0, CV_THRESH_BINARY_INV);
+	yulin(img, cImage);
 	imshow("Binary", cImage);
 
 	t0 = (double)getTickCount() - t0;

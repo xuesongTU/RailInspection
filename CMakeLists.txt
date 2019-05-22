@@ -38,3 +38,7 @@ target_link_libraries(yulin ${OpenCV_LIBS})
 add_executable(defects defectsDetect.cpp)
 
 target_link_libraries(defects ${OpenCV_LIBS})
+
+add_executable(test testFunc.cpp)
+
+target_link_libraries(test ${OpenCV_LIBS})
