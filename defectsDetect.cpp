@@ -9,48 +9,20 @@
 
 using namespace std;
 using namespace cv;
+const int G = 100; // compensation coef
+const int THR_Y = 40; // threshold to judge if there is yulinshang
+const int THR_D = 25; // threshold to judge if there is diaoluai
 
-//adaptive Median Filter
-
-uchar adaptiveProcess(const Mat &im, int row,int col,int kernelSize,int maxSize)
+void log_normalization(Mat& Img, Mat& imgL)
 {
-    vector<uchar> pixels;
-    for (int a = -kernelSize / 2; a <= kernelSize / 2; a++)
-        for (int b = -kernelSize / 2; b <= kernelSize / 2; b++)
-        {
-            pixels.push_back(im.at<uchar>(row + a, col + b));
-        }
-    sort(pixels.begin(), pixels.end());
-    auto min = pixels[0];
-    auto max = pixels[kernelSize * kernelSize - 1];
-    auto med = pixels[kernelSize * kernelSize / 2];
-    auto zxy = im.at<uchar>(row, col);
-    if (med > min && med < max)
-    {
-        // to B
-        if (zxy > min && zxy < max)
-            return zxy;
-        else
-            return med;
-    }
-    else
-    {
-        kernelSize += 2;
-        if (kernelSize <= maxSize)
-            return adaptiveProcess(im, row, col, kernelSize, maxSize);
- //增大窗口尺寸，继续A过程。
-        else
-            return med;
-    }
-}
+	if (Img.depth() == CV_8U)
+	{
+		Img.convertTo(imgL, CV_32F);
+	}
 
-
-void log_normalization(Mat& Img)
-{
-	Img = (Img + 1)*0.5;
+	imgL = (imgL + 1)*0.5;
 	Mat logImg;
-	cout << logImg << endl;
-	log(Img, logImg);
+	log(imgL, logImg);
 
 	Mat tmp_m, tmp_std;
 	double meanV, stdV;
@@ -59,123 +31,138 @@ void log_normalization(Mat& Img)
 	stdV = tmp_std.at<double>(0, 0);
 
 	logImg = (logImg - meanV) / stdV;
-	normalize(logImg, Img, 1.0, 0.0, NORM_MINMAX);
+
+	normalize(logImg, imgL, 1.0, 0.0, NORM_MINMAX);
 }
 
-
-void diaokuai(Mat &img, Mat &src, double thresh)
-{
-	threshold(img, src, thresh, 255.0, CV_THRESH_BINARY_INV);
-}
 
 void yulin(Mat &img, Mat &cImage)
 {
 	Mat tImage;
 	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(15, 15));
 	cv::morphologyEx(img, tImage, cv::MORPH_TOPHAT, element);
-	threshold(tImage, cImage, 35.0, 255.0, CV_THRESH_BINARY_INV);
+	threshold(tImage, cImage, 40.0, 255.0, CV_THRESH_BINARY_INV);
 }
 
-void adaptiveMedianFilter(Mat &img, int nRow, int nCol, int winSize)
-{
-	//扩展图像的边界
-	//copyMakeBorder(img, img, winSize / 2, winSize / 2, winSize / 2, winSize / 2, BorderTypes::BORDER_REFLECT);
-	
-	for(int i = winSize / 2; i < nRow - winSize / 2; i++)
-	{
-		for(int j = winSize / 2; j < nCol - winSize / 2; j++)
+
+void diaokuai(Mat& img, Mat& src)
+{	
+	src = img.clone();
+	int nCols = src.cols;
+	int nRows = src.rows;
+	vector<float> coefs;
+	for(int i = 0; i < nCols; i++)
+	{	
+		float mean = 0.;
+		for(int j = 0; j < nRows; j++)
 		{
-			vector<uchar> pixels;
-			for (int a = -winSize / 2; a <= winSize / 2; a++)
-			{
-				for (int b = -winSize / 2; b <= winSize / 2; b++)
-				{
-				    pixels.push_back(img.at<uchar>(i + a, j + b));
-				}
-			}
-			sort(pixels.begin(), pixels.end());
-			if(img.at<uchar>(i, j) == pixels.back());
-				img.at<uchar>(i,j) = pixels[winSize*winSize / 2];
-		}	
+			mean += src.at<uchar>(j, i);
+		}
+		mean /= nRows;
+		coefs.push_back(G / mean);
 	}
+	
+	double temp;
+	for(int i = 0; i < nCols; i++)
+	{	
+		for(int j = 0; j < nRows; j++)
+		{	
+			temp = (float)src.at<uchar>(j, i);
+			temp *= coefs[i];		
+			src.at<uchar>(j, i) = (uchar)temp;
+		}
+
+	}
+
+	threshold(src, src, 60.0, 255.0, CV_THRESH_BINARY);
 }
 
-int main(int argc, char* argv[]){
-	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/g1.png");
-	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
-	//resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
 
+bool isDefect(Mat &img, int thresh)
+{	
+	bool flag = false;
+	int len, num;
+	for(int i = 0; i < img.cols; i++)
+	{	
+		num = 0;
+		len = 0;
+		for(int j = 0; j < img.rows; j++)
+		{
+			if(img.at<uchar>(j, i) == 0)
+			{
+				num ++;
+				if(num > len)
+					len = num;
+			}
+			else
+			{
+				num = 0;
+			}
+		}
+		if(num > thresh)
+		{
+			flag = true;
+			break;
+		}
+	}
+
+	for(int i = 0; i < img.rows; i++)
+	{	
+		num = 0;
+		len = 0;
+		for(int j = 0; j < img.cols; j++)
+		{
+			if(img.at<uchar>(i,j) == 0)
+			{
+				num ++;
+				if(num > len)
+					len = num;
+			}
+			else
+			{
+				num = 0;
+			}
+		}
+		if(num > thresh)
+		{
+			flag = true;
+			break;
+		}
+	}
+
+	return flag;
+}
+
+int main(int argc, char* argv[])
+{
 	Mat img = imread("/home/xuesong/RailInspection/defectsImages/test/14.jpg");
 	img = img(Rect(250, 0, 180, 480));
 
-	
 	double t0 = (double)getTickCount();
-
 	if (img.empty())
 		return -1;
 	if (img.channels() != 1)
 	{
 		cvtColor(img, img, CV_BGR2GRAY);
 	}
-
 	imshow("raw", img);
-	if (img.depth() == CV_8U)
-	{
-		img.convertTo(img, CV_32F);
-	}
+
+	Mat imgY;
+	yulin(img, imgY);
+	imshow("yulin", imgY);
+	if(isDefect(imgY, THR_Y))
+		cout << "yulin" << endl;
 	
 
+	Mat imgD;
+	diaokuai(img, imgD);
+	imshow("diaokuai", imgD);
+	if(isDefect(imgD, THR_D))
+	cout << "diaokuai" << endl;
 	
-	
-	log_normalization(img);
-	imshow("normalization", img);
-	
-	Mat dImg;
-	diaokuai(img, dImg, 50.0);
-	imshow("diaokuai", dImg);
-
-
-	Mat aImage;	
-	adaptiveMedianFilter(img, img.cols, img.rows, 5);
-	imshow("adp", img);
-
-
-	Mat bImage;	
-	medianBlur(img, bImage, 5);
-	imshow("medianblur", bImage);
-	
-
-
-/*
-	int minSize = 5; // 滤波器窗口的起始尺寸
-    int maxSize = 7; // 滤波器窗口的最大尺寸
-    Mat im1;
-    // 扩展图像的边界
-    copyMakeBorder(img, im1, maxSize / 2, maxSize / 2, maxSize / 2, maxSize / 2, BorderTypes::BORDER_REFLECT);
-    // 图像循环
-    for (int j = maxSize / 2; j < im1.rows - maxSize / 2; j++)
-    {
-        for (int i = maxSize / 2; i < im1.cols * im1.channels() - maxSize / 2; i++)
-        {
-            im1.at<uchar>(j, i) = adaptiveProcess(im1, j, i, minSize, maxSize);
-        }
-    }
-	
-	imshow("median_filter", im1);
-*/	
-	//double t0 = (double)getTickCount();
-	//top-hat operation
-	//cv::Mat element(4, 4, CV_8U, cv::Scalar(1));
-	
-	Mat cImage;
-	yulin(img, cImage);
-	imshow("Binary", cImage);
-
 	t0 = (double)getTickCount() - t0;
 	cout << " time:\n " << t0 * 1000 / getTickFrequency() << " ms" << endl;
-	imshow("tophat", img);
-	waitKey();
-
+	waitKey();	
 
 	return 0;
 }

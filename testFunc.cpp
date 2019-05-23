@@ -50,37 +50,42 @@ void yulin(Mat &img, Mat &cImage)
 
 void diaokuai(Mat& img, Mat& src)
 {	
-	int nCols = img.cols;
-	int nRows = img.rows;
-	Mat gMean = Mat(1, 480, CV_32FC1);
-	vector<double> coefs;
+	src = img.clone();
+	int nCols = src.cols;
+	int nRows = src.rows;
+	vector<float> coefs;
 	for(int i = 0; i < nCols; i++)
 	{	
-		double mean = 0;
+		float mean = 0.;
 		for(int j = 0; j < nRows; j++)
 		{
-			mean += img.at<int>(i, j);
+			mean += src.at<uchar>(j, i);
 		}
 		mean /= nRows;
 		coefs.push_back(G / mean);
 	}
 	
+	double temp;
 	for(int i = 0; i < nCols; i++)
-	{	
+	{	cout << coefs[i] << endl;
 		for(int j = 0; j < nRows; j++)
-		{
-			mean += img.at<int>(i, j);
+		{	
+			temp = (float)src.at<uchar>(j, i);
+			temp *= coefs[i];		
+			src.at<uchar>(j, i) = (uchar)temp;
 		}
-		mean /= nRows;
-		coefs.push_back(G / mean);
+
 	}
+
+	threshold(src, src, 60.0, 255.0, CV_THRESH_BINARY_INV);
 }
 
 
 int main(int argc, char* argv[])
 {
-	Mat img = imread("/home/xuesong/RailInspection/defectsImages/test/1.jpg");
-	img = img(Rect(250, 0, 180, 480));
+	//Mat img = imread("/home/xuesong/RailInspection/defectsImages/test/1.jpg");
+	//img = img(Rect(250, 0, 180, 480));
+	Mat img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y2.png",0);
 		cout << img.cols << endl;
 
 	if (img.empty())
@@ -107,8 +112,14 @@ int main(int argc, char* argv[])
 	Mat imgTop;
 	yulin(img, imgTop);
 	imshow("yulin", imgTop);
-
-
+	
+	double t0 = (double)getTickCount();
+	Mat src;
+	diaokuai(img, src);
+	imshow("diaokuai", src);
+	
+	t0 = (double)getTickCount() - t0;
+	cout << " time:\n " << t0 * 1000 / getTickFrequency() << " ms" << endl;
 	waitKey();	
 
 	return 0;

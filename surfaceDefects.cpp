@@ -150,11 +150,11 @@ int main(int argc, char* argv[])
 	
 	for (k= 0; k < 1; k++)
 	{
-		//img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+		img = imread("/home/xuesong/RailInspection/defectsImages/diaokuai/d5.png");
+		resize(img, img, Size(200, 1000), 0, 0, CV_INTER_LINEAR);
 		//img = imread("/home/xuesong/RailInspection/defectsImages/yulinshang/y3.png");
-		img = imread("/home/xuesong/RailInspection/defectsImages/test/14.jpg");
-		img = img(Rect(250, 0, 180, 480));
-		cout << "hello" << img.channels() << endl;
+		//img = imread("/home/xuesong/RailInspection/defectsImages/test/1.jpg");
+		//img = img(Rect(250, 0, 180, 480));
 		
 		if (img.empty())
 			return -1;
@@ -227,10 +227,10 @@ int main(int argc, char* argv[])
 
 		double width = 0.;
 		double height = 0.;
-		getDefectSize(opened, width, height);
-		cout << "the area of defect: " << width * height << endl;
-		cv::imshow("result",opened);
-		waitKey();
+		//getDefectSize(opened, width, height);
+		//cout << "the area of defect: " << width * height << endl;
+		//cv::imshow("result",opened);
+		
 	
 		//cv::morphologyEx(image, closed, cv::MORPH_CLOSE, element5);
 
@@ -246,7 +246,7 @@ int main(int argc, char* argv[])
 
 	t0 = (double)getTickCount() - t0;
 	cout << " time:\n " << t0 * 1000 / getTickFrequency() / k << " ms" << endl;
-
+	waitKey();
 	return 0;
 }
 
